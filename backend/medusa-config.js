@@ -16,10 +16,10 @@ import {
   STRIPE_API_KEY,
   STRIPE_WEBHOOK_SECRET,
   WORKER_MODE,
-  MINIO_ENDPOINT,
-  MINIO_ACCESS_KEY,
-  MINIO_SECRET_KEY,
-  MINIO_BUCKET,
+  // MINIO_ENDPOINT,
+  // MINIO_ACCESS_KEY,
+  // MINIO_SECRET_KEY,
+  // MINIO_BUCKET,
   MEILISEARCH_HOST,
   MEILISEARCH_ADMIN_KEY
 } from 'lib/constants';
@@ -54,26 +54,22 @@ const medusaConfig = {
       key: Modules.FILE,
       resolve: '@medusajs/file',
       options: {
-        providers: [
-          ...(MINIO_ENDPOINT && MINIO_ACCESS_KEY && MINIO_SECRET_KEY ? [{
-            resolve: './src/modules/minio-file',
-            id: 'minio',
-            options: {
-              endPoint: MINIO_ENDPOINT,
-              accessKey: MINIO_ACCESS_KEY,
-              secretKey: MINIO_SECRET_KEY,
-              bucket: MINIO_BUCKET // Optional, default: medusa-media
-            }
-          }] : [{
-            resolve: '@medusajs/file-local',
-            id: 'local',
-            options: {
-              upload_dir: 'static',
-              backend_url: `${BACKEND_URL}/static`
-            }
-          }])
-        ]
-      }
+        providers: [{
+          resolve: '@medusajs/file-s3',
+          id: 'r2',
+          options: {
+            file_url: 'https://pub-653c0fdddb2f4b11a58a71fcdf15cfe2.r2.dev',
+            access_key_id: 'c3f351700a321eee00ee4938703c0dec',
+            secret_access_key: 'b6263da9860796489ec185efae047edec935190f7535315505c93341a34a5e00',
+            region: 'auto',                    // R2 always uses 'auto'
+            bucket: 'pahadi-peti-medusa',
+            endpoint: `https://${'4dba9ab4fd1c60859c54ef46a6f97347'}.r2.cloudflarestorage.com`,
+            additional_client_config: {
+              forcePathStyle: true,            // required for R2
+            },
+          },
+        }],
+      },
     },
     ...(REDIS_URL ? [{
       key: Modules.EVENT_BUS,
@@ -135,7 +131,7 @@ const medusaConfig = {
     }] : [])
   ],
   plugins: [
-  ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY ? [{
+    ...(MEILISEARCH_HOST && MEILISEARCH_ADMIN_KEY ? [{
       resolve: '@rokmohar/medusa-plugin-meilisearch',
       options: {
         config: {
@@ -156,9 +152,9 @@ const medusaConfig = {
           }
         }
       }
-    }] : [])
+    }] : []),
   ]
 };
 
-console.log(JSON.stringify(medusaConfig, null, 2));
+// console.log(JSON.stringify(medusaConfig, null, 2));
 export default defineConfig(medusaConfig);
