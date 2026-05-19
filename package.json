@@ -28,6 +28,7 @@
     "@medusajs/draft-order": "2.15.2",
     "@medusajs/framework": "2.15.2",
     "@medusajs/medusa": "2.15.2",
+    "@medusajs/utils": "2.15.2",
     "@medusajs/notification-sendgrid": "2.15.2",
     "@medusajs/payment-stripe": "2.15.2",
     "@medusajs/ui": "^4.1.12",
