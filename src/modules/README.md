@@ -39,9 +39,9 @@ export default Module(HELLO_MODULE, {
 
 The last step is to add the module in Medusa’s configurations.
 
-In `medusa-config.js`, add the module to the `modules` object:
+In `medusa-config.ts`, add the module to the `modules` object:
 
-```js title="medusa-config.js"
+```js title="medusa-config.ts"
 import { HELLO_MODULE } from "./src/modules/hello"
 
 module.exports = defineConfig({
